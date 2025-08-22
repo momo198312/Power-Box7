@@ -3,6 +3,7 @@
 ## 🚀 Quick Start
 
 Your project is now configured with the correct Supabase credentials:
+
 - **URL**: `https://lzfpvyzlndxsceheghtf.supabase.co`
 - **Environment variables**: Set via DevServerControl
 
@@ -11,6 +12,7 @@ Your project is now configured with the correct Supabase credentials:
 ### 1. Database Schema Setup
 
 **Option A: Full Setup with Sample Data (Recommended)**
+
 1. Go to [Supabase SQL Editor](https://supabase.com/dashboard/project/lzfpvyzlndxsceheghtf/sql)
 2. Copy the entire content of `supabase-setup-final.sql`
 3. Paste it into the SQL Editor
@@ -22,12 +24,14 @@ Use the SQL script from the SupabaseSetupTest component (available in the admin 
 ### 2. Verify Setup
 
 **Using the React App (Recommended)**:
+
 1. Start your dev server: `npm run dev`
-2. Go to `/admin` route 
+2. Go to `/admin` route
 3. Look for the "Supabase Setup Test" component
 4. Run the tests to verify everything is working
 
 **Alternative - Using Test Scripts**:
+
 ```bash
 # Test database connectivity (if Node.js commands are allowed)
 node test-database-connectivity.js
@@ -41,6 +45,7 @@ node test-realtime-sync.js
 The app currently allows any authenticated user to be an admin. To set up proper admin authentication:
 
 1. **Create an admin user**:
+
    ```sql
    -- Run in Supabase SQL Editor
    CREATE TABLE IF NOT EXISTS admin_users (
@@ -50,10 +55,10 @@ The app currently allows any authenticated user to be an admin. To set up proper
        is_active BOOLEAN DEFAULT true,
        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
    );
-   
+
    -- Enable RLS
    ALTER TABLE admin_users ENABLE ROW LEVEL SECURITY;
-   
+
    -- Create policies
    CREATE POLICY "Enable read for service role" ON admin_users FOR SELECT USING (auth.jwt() ->> 'role' = 'service_role');
    CREATE POLICY "Enable all for service role" ON admin_users FOR ALL USING (auth.jwt() ->> 'role' = 'service_role');
@@ -68,21 +73,25 @@ The app currently allows any authenticated user to be an admin. To set up proper
 ### Common Issues
 
 **1. "Connection failed" or "Missing tables"**
+
 - Run the SQL setup script from `supabase-setup-final.sql`
 - Check that your Supabase project is active
 - Verify environment variables are set correctly
 
 **2. "Real-time not working"**
+
 - Real-time subscriptions require proper RLS policies
 - Make sure tables have the correct policies set up
 - Check browser console for subscription errors
 
 **3. "Authentication failed"**
+
 - Verify SUPABASE_ANON_KEY is correct
 - Check that auth.users table exists
 - Ensure admin_users table is set up if using admin authentication
 
 **4. "Insert/Update failed"**
+
 - Check RLS policies allow the operation
 - Verify user is properly authenticated
 - Use service role key for admin operations
@@ -99,6 +108,7 @@ If you're having permission issues, you can temporarily use the permissive polic
 ```
 
 To revert to secure policies:
+
 ```sql
 -- Example for one table (repeat for all tables)
 DROP POLICY "Enable all operations for all users" ON hero_section;
@@ -108,12 +118,17 @@ CREATE POLICY "Enable all operations for authenticated users" ON hero_section FO
 ### Real-time Sync Issues
 
 1. **Check subscription status**:
+
    ```javascript
    const channel = supabase
      .channel("test")
-     .on("postgres_changes", { event: "*", schema: "public", table: "hero_section" }, (payload) => {
-       console.log("Real-time update:", payload);
-     })
+     .on(
+       "postgres_changes",
+       { event: "*", schema: "public", table: "hero_section" },
+       (payload) => {
+         console.log("Real-time update:", payload);
+       },
+     )
      .subscribe((status) => {
        console.log("Subscription status:", status);
      });
@@ -132,13 +147,14 @@ CREATE POLICY "Enable all operations for authenticated users" ON hero_section FO
 ### Production Setup
 
 1. **Use proper RLS policies**:
+
    ```sql
    -- Read access for everyone
    CREATE POLICY "public_read" ON table_name FOR SELECT USING (true);
-   
+
    -- Write access only for authenticated users
    CREATE POLICY "authenticated_write" ON table_name FOR ALL USING (auth.role() = 'authenticated');
-   
+
    -- Full access for service role
    CREATE POLICY "service_role_all" ON table_name FOR ALL USING (auth.jwt() ->> 'role' = 'service_role');
    ```
@@ -191,7 +207,8 @@ When everything is set up correctly:
 5. Ensure SQL setup script was run completely
 
 If issues persist, the problem is likely:
+
 - Incomplete SQL setup
-- Missing environment variables  
+- Missing environment variables
 - RLS policy configuration
 - Authentication setup issues
