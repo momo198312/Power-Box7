@@ -18,6 +18,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useHero } from "@/hooks/use-hero";
 import { supabase } from "@/lib/supabaseClient";
+import { upsertSingletonWithFixedId } from "@/lib/supabase-helpers";
 import { uploadImageToSupabase } from "@/lib/imageUpload";
 import {
   showUploadSuccess,
@@ -170,15 +171,11 @@ export default function Hero() {
     try {
       console.log("Saving hero data:", localHeroData);
 
-      // Save to Supabase
-      const { data, error } = await supabase
-        .from("hero_section")
-        .upsert({
-          id: 1, // Use fixed ID for singleton pattern
-          content: localHeroData,
-          updated_at: new Date().toISOString(),
-        })
-        .select();
+      // Save to Supabase using UUID-compatible helper
+      const { data, error } = await upsertSingletonWithFixedId(
+        "hero_section",
+        { content: localHeroData }
+      );
 
       if (error) {
         // Handle specific error cases
