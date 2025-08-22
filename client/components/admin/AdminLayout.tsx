@@ -22,6 +22,7 @@ import {
   Shield,
   Clock,
   User,
+  Database,
 } from "lucide-react";
 
 const adminSections = [
@@ -94,6 +95,13 @@ const adminSections = [
     path: "/admin/popups",
     icon: Zap,
     color: "text-yellow-600",
+  },
+  {
+    id: "supabase-setup",
+    label: "Supabase Setup",
+    path: "/admin/supabase-setup",
+    icon: Database,
+    color: "text-emerald-600",
   },
 ];
 
