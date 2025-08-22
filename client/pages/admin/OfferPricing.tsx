@@ -173,7 +173,7 @@ export default function OfferPricing() {
         return;
       }
 
-      if (data) {
+      if (data && data.content) {
         setOfferData(data.content);
       }
     } catch (error) {
