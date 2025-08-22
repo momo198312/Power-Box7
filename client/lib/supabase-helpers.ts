@@ -7,10 +7,10 @@ import { supabase } from "./supabaseClient";
 export async function upsertSingletonData(
   tableName: string,
   data: any,
-  options: { 
-    onConflict?: string; 
+  options: {
+    onConflict?: string;
     select?: string;
-  } = {}
+  } = {},
 ) {
   try {
     // First, try to get the existing row
@@ -35,9 +35,9 @@ export async function upsertSingletonData(
     const selectClause = options.select || "*";
     const { data: result, error } = await supabase
       .from(tableName)
-      .upsert(upsertData, { 
+      .upsert(upsertData, {
         onConflict: options.onConflict || "id",
-        ignoreDuplicates: false 
+        ignoreDuplicates: false,
       })
       .select(selectClause);
 
@@ -54,7 +54,7 @@ export async function upsertSingletonData(
  */
 export const SINGLETON_IDS = {
   hero_section: "11111111-1111-1111-1111-111111111111",
-  why_choose_section: "22222222-2222-2222-2222-222222222222", 
+  why_choose_section: "22222222-2222-2222-2222-222222222222",
   product_gallery: "33333333-3333-3333-3333-333333333333",
   trust_section: "44444444-4444-4444-4444-444444444444",
   offer_pricing: "55555555-5555-5555-5555-555555555555",
@@ -71,7 +71,7 @@ export const SINGLETON_IDS = {
 export async function upsertSingletonWithFixedId(
   tableName: keyof typeof SINGLETON_IDS,
   data: any,
-  options: { select?: string } = {}
+  options: { select?: string } = {},
 ) {
   try {
     const upsertData = {
@@ -83,15 +83,18 @@ export async function upsertSingletonWithFixedId(
     const selectClause = options.select || "*";
     const { data: result, error } = await supabase
       .from(tableName)
-      .upsert(upsertData, { 
+      .upsert(upsertData, {
         onConflict: "id",
-        ignoreDuplicates: false 
+        ignoreDuplicates: false,
       })
       .select(selectClause);
 
     return { data: result, error };
   } catch (error) {
-    console.error(`Error in upsertSingletonWithFixedId for ${tableName}:`, error);
+    console.error(
+      `Error in upsertSingletonWithFixedId for ${tableName}:`,
+      error,
+    );
     return { data: null, error };
   }
 }
@@ -99,7 +102,10 @@ export async function upsertSingletonWithFixedId(
 /**
  * Get singleton data (first row from table)
  */
-export async function getSingletonData(tableName: string, select: string = "*") {
+export async function getSingletonData(
+  tableName: string,
+  select: string = "*",
+) {
   try {
     const { data, error } = await supabase
       .from(tableName)

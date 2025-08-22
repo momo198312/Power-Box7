@@ -100,10 +100,9 @@ export default function SEO() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const { data, error } = await upsertSingletonWithFixedId(
-        "seo_settings",
-        { content: seoData }
-      );
+      const { data, error } = await upsertSingletonWithFixedId("seo_settings", {
+        content: seoData,
+      });
 
       if (error) {
         console.error("Error saving data:", error);

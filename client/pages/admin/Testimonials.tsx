@@ -185,7 +185,7 @@ export default function Testimonials() {
     try {
       const { data, error } = await upsertSingletonWithFixedId(
         "customer_reviews",
-        { content: reviewsData }
+        { content: reviewsData },
       );
 
       if (error) {

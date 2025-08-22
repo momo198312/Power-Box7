@@ -164,7 +164,7 @@ export default function WhyChoose() {
 
       const { data, error } = await upsertSingletonWithFixedId(
         "why_choose_section",
-        { content: whyChooseData }
+        { content: whyChooseData },
       );
 
       if (error) {

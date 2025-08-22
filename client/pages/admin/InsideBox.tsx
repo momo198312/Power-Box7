@@ -151,7 +151,7 @@ export default function InsideBox() {
     try {
       const { data, error } = await upsertSingletonWithFixedId(
         "product_gallery",
-        { content: productData }
+        { content: productData },
       );
 
       if (error) {

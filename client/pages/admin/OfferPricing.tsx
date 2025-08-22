@@ -189,7 +189,7 @@ export default function OfferPricing() {
     try {
       const { data, error } = await upsertSingletonWithFixedId(
         "offer_pricing",
-        { content: offerData }
+        { content: offerData },
       );
 
       if (error) {

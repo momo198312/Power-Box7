@@ -118,10 +118,9 @@ export default function Footer() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const { data, error } = await upsertSingletonWithFixedId(
-        "footer",
-        { content: footerData }
-      );
+      const { data, error } = await upsertSingletonWithFixedId("footer", {
+        content: footerData,
+      });
 
       if (error) {
         logError("Error saving data:", error);

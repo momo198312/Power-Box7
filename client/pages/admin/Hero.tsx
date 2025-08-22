@@ -172,10 +172,9 @@ export default function Hero() {
       console.log("Saving hero data:", localHeroData);
 
       // Save to Supabase using UUID-compatible helper
-      const { data, error } = await upsertSingletonWithFixedId(
-        "hero_section",
-        { content: localHeroData }
-      );
+      const { data, error } = await upsertSingletonWithFixedId("hero_section", {
+        content: localHeroData,
+      });
 
       if (error) {
         // Handle specific error cases
