@@ -15,6 +15,7 @@ import {
   X,
 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
+import { upsertSingletonWithFixedId } from "@/lib/supabase-helpers";
 
 interface TrustElement {
   icon: string;
@@ -186,11 +187,10 @@ export default function OfferPricing() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const { data, error } = await supabase.from("offer_pricing").upsert({
-        id: 1,
-        content: offerData,
-        updated_at: new Date().toISOString(),
-      });
+      const { data, error } = await upsertSingletonWithFixedId(
+        "offer_pricing",
+        { content: offerData }
+      );
 
       if (error) {
         console.error("Error saving data:", error);

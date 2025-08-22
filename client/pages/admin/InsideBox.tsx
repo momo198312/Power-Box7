@@ -11,6 +11,7 @@ import {
   Link as LinkIcon,
 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
+import { upsertSingletonWithFixedId } from "@/lib/supabase-helpers";
 import { useRealTimeSync } from "@/hooks/use-data-sync";
 import { logDatabaseError } from "@/lib/error-handler";
 
@@ -148,11 +149,10 @@ export default function InsideBox() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const { data, error } = await supabase.from("product_gallery").upsert({
-        id: 1,
-        content: productData,
-        updated_at: new Date().toISOString(),
-      });
+      const { data, error } = await upsertSingletonWithFixedId(
+        "product_gallery",
+        { content: productData }
+      );
 
       if (error) {
         if (error.code === "42P01" || error.code === "PGRST116") {
