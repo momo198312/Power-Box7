@@ -104,7 +104,7 @@ export default function Footer() {
         return;
       }
 
-      if (data) {
+      if (data && data.content) {
         setFooterData(data.content);
       }
     } catch (error) {
