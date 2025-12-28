@@ -21,6 +21,7 @@ import OfferPricing from "./pages/admin/OfferPricing";
 import Footer from "./pages/admin/Footer";
 import SEO from "./pages/admin/SEO";
 import Popups from "./pages/admin/Popups";
+import { SupabaseSetupTest } from "./components/SupabaseSetupTest";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ const App = () => (
                 <Route path="footer" element={<Footer />} />
                 <Route path="seo" element={<SEO />} />
                 <Route path="popups" element={<Popups />} />
+                <Route path="supabase-setup" element={<SupabaseSetupTest />} />
               </Route>
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

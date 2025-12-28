@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabaseClient";
+import { upsertSingletonWithFixedId } from "@/lib/supabase-helpers";
 import { usePopups } from "@/hooks/use-popups";
 
 export default function Popups() {
@@ -165,16 +166,8 @@ export default function Popups() {
     setIsSaving(true);
     try {
       await Promise.all([
-        supabase.from("product_popup").upsert({
-          id: 1,
-          content: productData,
-          updated_at: new Date().toISOString(),
-        }),
-        supabase.from("exit_intent_popup").upsert({
-          id: 1,
-          content: exitData,
-          updated_at: new Date().toISOString(),
-        }),
+        upsertSingletonWithFixedId("product_popup", { content: productData }),
+        upsertSingletonWithFixedId("exit_intent_popup", { content: exitData }),
       ]);
 
       // Update context

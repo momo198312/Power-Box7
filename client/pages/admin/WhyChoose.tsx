@@ -13,6 +13,7 @@ import {
   Link as LinkIcon,
 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
+import { upsertSingletonWithFixedId } from "@/lib/supabase-helpers";
 import { logError } from "@/lib/error-utils";
 import { uploadImageToSupabase } from "@/lib/imageUpload";
 
@@ -161,11 +162,10 @@ export default function WhyChoose() {
     try {
       console.log("Saving why choose data:", whyChooseData);
 
-      const { data, error } = await supabase.from("why_choose_section").upsert({
-        id: 1,
-        content: whyChooseData,
-        updated_at: new Date().toISOString(),
-      });
+      const { data, error } = await upsertSingletonWithFixedId(
+        "why_choose_section",
+        { content: whyChooseData },
+      );
 
       if (error) {
         if (error.code === "42P01") {

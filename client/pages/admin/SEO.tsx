@@ -17,6 +17,7 @@ import {
   Settings,
 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
+import { upsertSingletonWithFixedId } from "@/lib/supabase-helpers";
 import { useSEO } from "@/hooks/use-seo";
 import { logError } from "@/lib/error-utils";
 
@@ -99,10 +100,8 @@ export default function SEO() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const { data, error } = await supabase.from("seo_settings").upsert({
-        id: 1,
+      const { data, error } = await upsertSingletonWithFixedId("seo_settings", {
         content: seoData,
-        updated_at: new Date().toISOString(),
       });
 
       if (error) {

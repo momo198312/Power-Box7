@@ -13,6 +13,7 @@ import {
   Youtube,
 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
+import { upsertSingletonWithFixedId } from "@/lib/supabase-helpers";
 import { logError } from "@/lib/error-utils";
 
 interface FooterData {
@@ -104,7 +105,7 @@ export default function Footer() {
         return;
       }
 
-      if (data) {
+      if (data && data.content) {
         setFooterData(data.content);
       }
     } catch (error) {
@@ -117,10 +118,8 @@ export default function Footer() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const { data, error } = await supabase.from("footer").upsert({
-        id: 1,
+      const { data, error } = await upsertSingletonWithFixedId("footer", {
         content: footerData,
-        updated_at: new Date().toISOString(),
       });
 
       if (error) {

@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Star, Save, Upload, Image as ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabaseClient";
+import { upsertSingletonWithFixedId } from "@/lib/supabase-helpers";
 import { useRealTimeSync } from "@/hooks/use-data-sync";
 import { logDatabaseError } from "@/lib/error-handler";
 
@@ -182,11 +183,10 @@ export default function Testimonials() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const { data, error } = await supabase.from("customer_reviews").upsert({
-        id: 1,
-        content: reviewsData,
-        updated_at: new Date().toISOString(),
-      });
+      const { data, error } = await upsertSingletonWithFixedId(
+        "customer_reviews",
+        { content: reviewsData },
+      );
 
       if (error) {
         if (error.code === "42P01" || error.code === "PGRST116") {
